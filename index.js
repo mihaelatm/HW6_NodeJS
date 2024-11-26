@@ -1,16 +1,29 @@
 import express from "express";
+import cors from "cors";
 import "dotenv/config";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   try {
-  } catch (error) {}
+    res.send("Hello, World!");
+  } catch (error) {
+    res.status(500).send("An error occurred");
+  }
 });
 
 app.post("/", (req, res) => {
-  res.send("Post request received");
+  const data = req.body;
+
+  if (!data) {
+    return res.status(400).send("Data is required");
+  }
+  res.send(`Received data: ${data}`);
 });
 
 app.listen(port, () => {
